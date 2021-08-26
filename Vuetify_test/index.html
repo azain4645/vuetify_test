@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VueTest</title>
+  <link rel="stylesheet" href="vuetify.min.css">
+</head>
+
+<body>
+  <div id="app">
+    <v-app id="inspire">
+      <v-app-bar
+        app
+        color="red lighten-1"
+        flat
+      >
+        <v-container class="py-0 fill-height">
+          <v-app-bar-title
+            style="color:white"
+          >
+            {{ links }}
+          </v-app-bar-title>
+
+          <v-spacer></v-spacer>
+  
+          <!-- <v-responsive max-width="260">
+            <v-text-field
+              dense
+              flat
+              hide-details
+              rounded
+              solo-inverted
+            ></v-text-field> -->
+          </v-responsive>
+        </v-container>
+      </v-app-bar>
+  
+      <v-main class="grey lighten-3">
+        <v-container>
+          <v-row>
+            <v-col cols="2">
+              <v-sheet rounded="lg">
+                <v-list color="transparent">
+                  <v-list-item
+                    v-for="n in 5"
+                    :key="n"
+                    link
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        List Item {{ n }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <v-list-item
+                    link
+                    v-on:click="ChangeList"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        ListChange
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <v-list-item
+                    link
+                    v-on:click="ChangeList2"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        ListChange2
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                </v-list>
+              </v-sheet>
+            </v-col>
+  
+            <v-col>
+              <v-sheet
+                min-height="70vh"
+                rounded="lg"
+              >
+                
+                <transition-group name="list" tag="v-row" class="pa-8">
+                  <v-col
+                    v-for="n in items"
+                    :key="n"
+                    cols="3"
+                  >
+                    <v-card height="200" @click.stop="dialog = true">
+                      {{ n }}
+                    </v-card>
+                  </v-col>
+                </transition-group>
+
+
+                <v-btn color="success" @click.stop="dialog = true">
+                  開く
+                </v-btn>
+                <v-dialog
+                  v-model="dialog"
+                  max-width="800"
+                >
+                  <v-card>
+                    <v-carousel 
+                      cycle
+                      hide-delimiters
+                    >
+                      <template v-slot:prev="{ on, attrs }">
+                        <v-btn
+                          color="success"
+                          v-bind="attrs"
+                          v-on="on"
+                        ><<</v-btn>
+                      </template>
+                      <template v-slot:next="{ on, attrs }">
+                        <v-btn
+                          color="info"
+                          v-bind="attrs"
+                          v-on="on"
+                        >>></v-btn>
+                      </template>
+                      <v-carousel-item
+                        v-for="(color, i) in user.colors"
+                        :key="color"
+                      >
+                      <!-- :src = -->
+                        <v-sheet
+                          :color="color"
+                          height="100%"
+                          tile
+                        >
+                          <v-row
+                            class="fill-height"
+                            align="center"
+                            justify="center"
+                          >
+                            <div class="text-h2">
+                              Slide {{ i + 1 }}
+                            </div>
+                          </v-row>
+                        </v-sheet>
+                      </v-carousel-item>
+                    </v-carousel>
+
+                    <v-spacer></v-spacer>
+                    <v-card-text>
+                      <h3>品名：{{ user.name }}</h3>
+                      <p>掲載部署：{{ user.busyo }}</p>
+                      <p>詳細：{{ user.comment }}</p>
+                      <p>資材課補足：{{ user.comment2 }}</p>
+
+                    </v-card-text>
+            
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+            
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="dialog = false"
+                      >
+                        閉じる
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+              </v-sheet>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="vue.js"></script>
+  <script src="vuetify.js"></script>
+  <script src="axios.min.js"></script>
+  <script src="button-counter.vue"></script>
+  <script>
+    new Vue({
+      el: '#app, #counter-demo',
+      vuetify: new Vuetify(),
+      data: {
+        links:'資材整理検討会',
+        name: 'Vue.js',
+        users: [],
+        user: {
+          name: "test",
+          busyo: "購買室",
+          colors: [
+            'primary',
+            'secondary',
+            'red darken-5',
+            'yellow darken-2',
+            'red',
+            'orange',
+          ],
+        },
+        userName: "test",
+        dialog: false,
+        show: true,
+        // model: 0,
+        colors: [
+          'primary',
+          'secondary',
+          'yellow darken-2',
+          'red',
+          'orange',
+        ],
+        items: [
+          'A',
+          'B',
+          'C',
+          'D',
+          'E',
+          'F',
+          'G',
+          'H',
+          'I',
+        ]
+      },
+      created() {
+        this.items = [
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f',
+            'g',
+            'h'
+          ]
+      },
+      methods: {
+        getList: function() {
+          axios.get('https://jsonplaceholder.typicode.com/users')
+              .then(response => this.users = response.data)
+              .catch(error => console.log(error))
+        },
+        ChangeList: function(){
+          this.items = [
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f',
+            'g',
+            'h'
+          ]
+        },
+        ChangeList2: function(){
+          this.items = [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+          ]
+        },
+      },
+      mounted :function(){
+      },
+    })
+  </script> 
+
+  <style>
+    .list-enter {
+      transition: all 1s;
+      opacity: 0;
+    }
+    .v-enter-active {
+      transition: opacity 1s
+    }
+    .list-enter-to{
+      transition: all 1s;
+      opacity: 1;
+    }
+    .list-move {
+      transition: all 1s;
+    }
+
+  </style>
+</body>
+</html>
